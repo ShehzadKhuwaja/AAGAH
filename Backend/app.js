@@ -27,15 +27,13 @@ app.use(express.json());
 app.use(cookieParser());
 // Serve the uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const config = require('./utils/config')
 
 require('dotenv').config();
 
-// database connection
-const dbURI = 'mongodb+srv://fullstack:fullstack@cluster0.413sbvx.mongodb.net/Aagah?retryWrites=true&w=majority&appName=Cluster0';
-
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then((result) => {
-    app.listen(3000, '0.0.0.0', () => {
+    app.listen(config.PORT, '0.0.0.0', () => {
       console.log('Server is listening on port 3000');
     });
   })

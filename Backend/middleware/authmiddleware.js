@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const config = require('../utils/config')
 
 const requireAdmin = (req, res, next) => {
     if (!res.locals.user || res.locals.user.role !== 'admin') {
@@ -12,7 +13,7 @@ const requireAuth = (req, res, next) => {
     const token = req.cookies.jwt || req.headers.authorization?.split(' ')[1];
     console.log(token);
     if (token) {
-        jwt.verify(token, 'hasan secret', (err, decodedToken) => {
+        jwt.verify(token, config.SECRET, (err, decodedToken) => {
             
             if (err) {
                 console.log(err.message);
@@ -32,7 +33,7 @@ const requireAuth = (req, res, next) => {
 const checkUser = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, 'hasan secret', async (err, decodedToken) => {
+        jwt.verify(token, config.SECRET, async (err, decodedToken) => {
             if (err) {
                 console.log(err.message);
                 res.locals.user = null;
